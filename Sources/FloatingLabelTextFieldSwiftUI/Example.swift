@@ -16,7 +16,7 @@ struct ContentView: View {
     
     @State private var lastName: String = ""
     @State private var isValidLastName: Bool = false
-    
+
     @State private var mobileNumber: String = ""
     @State private var email: String = ""
     @State private var isValidEmail: Bool = false
@@ -43,37 +43,23 @@ struct ContentView: View {
         self.birthDate = formatter.string(from: self.date)
     }
     
+    
     var body: some View {
         VStack {
             
-            HStack(spacing: 20) {
-                FloatingLabelTextField($firstName, validtionChecker: $isValidFirstName, placeholder: "First Name", editingChanged: { (isChanged) in
-                
-                }) {
-                    
-                }
-                .addDisableEditingAction([.all])
+                FloatingLabelTextField($firstName, validtionChecker: $isValidFirstName, placeholder: "First Name")
+                //.addDisableEditingAction([.all])
                 .isShowError(true)
-                .addValidations([.init(condition: firstName.isValid(.alphabet), errorMessage: "Invalid Name"),
-                                 .init(condition: firstName.count >= 2, errorMessage: "Minimum two character long")
+                .addValidations([
+                    .init(condition: !firstName.isEmpty, errorMessage: "Invalid Name"),
+                    .init(condition: firstName.count >= 2, errorMessage: "Minimum two character long")
                 ])
+        
                 .isRequiredField(true, with: "Name field is required")
-                .floatingStyle(ThemeTextFieldStyle())
-                .modifier(ThemeTextField())
-                
-            }
+                //.floatingStyle(ThemeTextFieldStyle())
+                //.modifier(ThemeTextField())
+            FloatingLabelTextField($lastName, validtionChecker: $isValidLastName, placeholder: "First Name")
             
-            FloatingLabelTextField($birthDate, placeholder: "Birth Date", editingChanged: { (isChanged) in
-                self.showDatePicker = isChanged
-            }) {
-                
-            }
-            .modifier(ThemeTextField())
-            
-            if showDatePicker {
-                DatePicker("", selection: selectedDate,
-                           displayedComponents: .date)
-            }
             
             Button(action: {
                 if firstName.isEmpty{
